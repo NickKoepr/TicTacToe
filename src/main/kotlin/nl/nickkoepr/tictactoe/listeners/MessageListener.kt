@@ -43,80 +43,81 @@ class MessageListener : ListenerAdapter() {
                             val user = event.message.mentionedUsers[0]
                             val userId = user.id
 
-                            if (user != null) {
-                                if (!user.isBot) {
-                                    if (userId != authorId) {
-                                        if (!GameManager.hasGame(userId)) {
-                                            if (!GameRequestManager.hasSendRequest(authorId)) {
-                                                if (!GameManager.hasGame(authorId)) {
-                                                    val embed = EmbedBuilder()
-                                                    embed.setTitle("TicTacToe request")
-                                                    embed.setColor(ColorUtil.get(Colors.STANDARD))
-                                                    embed.setDescription(
-                                                        "${user.name}, ${event.author.name} requested a match of TicTacToe!"
-                                                    )
-                                                    event.channel.sendMessage(embed.build())
-                                                        .setActionRows(
-                                                            ActionRow.of(
-                                                                Button.success("accept", "Accept"),
-                                                                Button.danger("decline", "Decline")
-                                                            )
-                                                        ).queue({
-                                                            GameRequestManager.createRequest(
-                                                                Player(event.author.name, Position.X, event.author.id),
-                                                                Player(user.name, Position.O, user.id),
-                                                                it.id,
-                                                                event.channel.id
-                                                            )
-                                                        }, handler)
-                                                } else {
-                                                    event.channel.sendMessage(
-                                                        MessageUtil.errorMessage(
-                                                            "You are already in a game!",
-                                                            "You are already in a game. Use `${prefix}tictactoe stop` to stop your current game."
-                                                        )
-                                                    ).queue(null, handler)
-                                                }
-                                            } else {
-                                                event.channel.sendMessage(
-                                                    MessageUtil.errorMessage(
-                                                        "You already send a request!",
-                                                        "Type `${prefix}tictactoe stop` to stop your current request."
-                                                    )
-                                                ).queue(null, handler)
-                                            }
-                                        } else {
-                                            event.channel.sendMessage(
-                                                MessageUtil.errorMessage(
-                                                    "This user is already in a game!",
-                                                    "The user ${user.name} is already in a game."
-                                                )
-                                            ).queue(null, handler)
-                                        }
-
-                                    } else {
-                                        event.channel.sendMessage(
-                                            MessageUtil.errorMessage(
-                                                "Invalid user",
-                                                "You cannot play TicTacToe with yourself!"
-                                            )
-                                        ).queue(null, handler)
-                                    }
-                                } else {
-                                    event.channel.sendMessage(
-                                        MessageUtil.errorMessage(
-                                            "Invalid user",
-                                            "You cannot play TicTacToe with a bot!"
-                                        )
-                                    ).queue(null, handler)
-                                }
-                            } else {
+                            if (user == null) {
                                 event.channel.sendMessage(
                                     MessageUtil.errorMessage(
                                         "User not exists", "The tagged user does not exists!"
                                     )
                                 ).queue(null, handler)
+                                return
                             }
+                            if (user.isBot) {
+                                event.channel.sendMessage(
+                                    MessageUtil.errorMessage(
+                                        "Invalid user",
+                                        "You cannot play TicTacToe with a bot!"
+                                    )
+                                ).queue(null, handler)
+                                return
+                            }
+                            if (userId == authorId) {
+                                event.channel.sendMessage(
+                                    MessageUtil.errorMessage(
+                                        "Invalid user",
+                                        "You cannot play TicTacToe with yourself!"
+                                    )
+                                ).queue(null, handler)
+                                return
+                            }
+                            if (GameManager.hasGame(userId)) {
+                                event.channel.sendMessage(
+                                    MessageUtil.errorMessage(
+                                        "This user is already in a game!",
+                                        "The user ${user.name} is already in a game."
+                                    )
+                                ).queue(null, handler)
+                                return
+                            }
+                            if (GameRequestManager.hasSendRequest(authorId)) {
+                                event.channel.sendMessage(
+                                    MessageUtil.errorMessage(
+                                        "You already send a request!",
+                                        "Type `${prefix}tictactoe stop` to stop your current request."
+                                    )
+                                ).queue(null, handler)
+                                return
+                            }
+                            if (!GameManager.hasGame(authorId)) {
+                                event.channel.sendMessage(
+                                    MessageUtil.errorMessage(
+                                        "You are already in a game!",
+                                        "You are already in a game. Use `${prefix}tictactoe stop` to stop your current game."
+                                    )
+                                ).queue(null, handler)
+                                return
+                            }
+
+                            val embed = EmbedBuilder()
+                            embed.setTitle("TicTacToe request")
+                            embed.setColor(ColorUtil.get(Colors.STANDARD))
+                            embed.setDescription(
+                                "${user.name}, ${event.author.name} requested a match of TicTacToe!"
+                            )
+                            event.channel.sendMessage(embed.build())
+                                .setActionRows(
+                                    ActionRow.of(
+                                        Button.success("accept", "Accept"),
+                                        Button.danger("decline", "Decline")
+                                    )
+                                ).queue({
+                                    GameRequestManager.createRequest(
+                                        Player(event.author.name, Position.X, event.author.id),
+                                        Player(user.name, Position.O, user.id),
+                                        it.id,
+                                        event.channel.id
+                                    )
+                                }, handler)
+
                         } else {
                             val embed = EmbedBuilder()
                             embed.setColor(ColorUtil.get(Colors.ERROR))
