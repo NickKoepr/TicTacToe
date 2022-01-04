@@ -25,14 +25,14 @@ class PrefixCommand(override val name: String, override val description: String)
                 if (DatabaseManager.hasPrefix(guildId)) DatabaseManager.removePrefix(guildId)
                 channel.sendMessage(
                     MessageUtil.successMessage(
-                        "Changed prefix",
-                        "The prefix is been reset to `${BotUtil.standardPrefix}`!"
+                        "Reset prefix",
+                        "The prefix has been reset to `${BotUtil.standardPrefix}`!"
                     )
                 ).queue(null, handler)
             } else {
                 val char = args[2].toCharArray()
                 if (char.size == 1) {
-                    if (char[0] != '.') {
+                    if (char[0] != BotUtil.standardPrefix) {
                         DatabaseManager.setPrefix(guildId, char[0])
                     } else {
                         DatabaseManager.removePrefix(guildId)
@@ -56,10 +56,9 @@ class PrefixCommand(override val name: String, override val description: String)
             channel.sendMessage(
                 MessageUtil.errorMessage(
                     "No permission",
-                    "You don't have permission to do this."
+                    "You need the permission `MANAGE_SERVER` to do this."
                 )
             ).queue(null, handler)
         }
     }
-
 }
