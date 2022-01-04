@@ -7,7 +7,6 @@ class ConsoleThread : Thread() {
     override fun run() {
         val input = Scanner(System.`in`)
         while (input.hasNextLine()) {
-
             when (input.nextLine().lowercase()) {
                 "help" -> println(
                     "TicTacToe console commands\n\n" +

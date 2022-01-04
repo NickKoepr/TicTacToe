@@ -2,8 +2,8 @@ package nl.nickkoepr.tictactoe.utils
 
 object GameUtil {
 
-    //Return the request choise based on the id of the button.
-    fun buttonToRequestChoise(id: String): Boolean{
+    //Return the request choice based on the id of the button.
+    fun buttonToRequestChoice(id: String): Boolean{
         return when (id){
             "accept" -> true
             "decline" -> false

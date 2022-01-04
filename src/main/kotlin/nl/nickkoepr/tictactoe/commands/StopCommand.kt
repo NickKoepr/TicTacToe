@@ -51,9 +51,9 @@ class StopCommand(override val description: String, override val name: String) :
                         )
                     ).queue(null, handler)
                 } else {
-                    if (!GameManager.checkPlayerChoosedRematch(userId)) {
+                    if (!GameManager.hasPlayerChosenRematch(userId)) {
                         BotUtil.jda.getTextChannelById(game.channelId)?.retrieveMessageById(game.message)?.queue({
-                            GameManager.playerChoosedRematch(
+                            GameManager.playerRematchChoice(
                                 Player(user.name, Position.X, user.id),
                                 game,
                                 false,

@@ -33,6 +33,7 @@ object BotUtil {
         }
     }
 
+    //Check if the bot had all the permissions that are essential to make the bot work.
     fun hasAllPermissions(message: Message): Boolean {
         val permissionsList = listOf(
             Permission.VIEW_CHANNEL,
@@ -40,33 +41,29 @@ object BotUtil {
             Permission.MESSAGE_READ,
             Permission.MESSAGE_MANAGE
         )
-        val dontHavePermissions = mutableListOf<Permission>()
+        val neededPermissions = mutableListOf<Permission>()
 
         for (permission in permissionsList) {
-            if (!message.guild.selfMember.hasPermission(permission) || !message.guild.selfMember.hasPermission(
-                    message.textChannel,
-                    permission
-                )
+            if (!message.guild.selfMember.hasPermission(permission) ||
+                !message.guild.selfMember.hasPermission(message.textChannel, permission)
             ) {
-                dontHavePermissions.add(permission)
+                neededPermissions.add(permission)
             }
         }
 
-        if (dontHavePermissions.isNotEmpty()) {
-            var perms: String = ""
-            dontHavePermissions.forEach { perms += "$it\n" }
+        if (neededPermissions.isNotEmpty()) {
+            var perms = ""
+            neededPermissions.forEach { perms += "$it\n" }
 
-            if (message.guild.selfMember.hasPermission(Permission.MESSAGE_WRITE) && message.guild.selfMember.hasPermission(
-                    message.textChannel,
-                    Permission.MESSAGE_WRITE
-                )
+            if (message.guild.selfMember.hasPermission(Permission.MESSAGE_WRITE) &&
+                message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_WRITE)
             ) {
                 message.channel.sendMessage(
                     MessageUtil.errorMessage(
-                        "Missing permission(s)!", "**I do not have the permission(s)** `$perms`** " +
-                                "Please give these permssions to the bot, otherwise the bot will not work.**"
+                        "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
+                                "Please give these permissions, otherwise I can't work.**"
                     )
-                ).queue(null, BotUtil.getUnknownMessageHandler(message))
+                ).queue(null, getUnknownMessageHandler(message))
             }
             return false
         }
@@ -74,7 +71,7 @@ object BotUtil {
     }
 
 
-    fun getUptime(): String {
+    private fun getUptime(): String {
         val difference = System.currentTimeMillis() - timeStartedMilliseconds
         val duration = Duration.ofMillis(difference)
         return "${duration.toDays()} day(s), " +
@@ -90,11 +87,11 @@ object BotUtil {
                 "Bot uptime: ${getUptime()}\n" +
                 "Active games: ${GameManager.getActiveGamesSize()}\n" +
                 "Active requests: ${GameRequestManager.getRequestsSize()}\n" +
-                "Server count: ${jda.guilds.size}\n" +
-                "commands send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
-                "   - help command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
-                "   - stop command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
-                "   - prefix command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALPREFIXCOMMAND)}\n" +
+                "Current server count: ${jda.guilds.size}\n" +
+                "total commands send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
+                "   - total help command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
+                "   - total stop command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
+                "   - total prefix command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALPREFIXCOMMAND)}\n" +
                 "Total games played: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALGAMESPLAYED)}"
     }
 

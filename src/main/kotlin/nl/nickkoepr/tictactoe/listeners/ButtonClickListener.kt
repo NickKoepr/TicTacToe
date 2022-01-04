@@ -6,14 +6,12 @@ import nl.nickkoepr.tictactoe.game.GameManager
 import nl.nickkoepr.tictactoe.game.gamerequest.GameRequestManager
 import nl.nickkoepr.tictactoe.game.objects.Player
 import nl.nickkoepr.tictactoe.game.objects.Position
-import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.GameUtil
 import java.lang.NumberFormatException
 
 class ButtonClickListener : ListenerAdapter() {
 
     override fun onButtonClick(event: ButtonClickEvent) {
-        Logger.debug("Fired ButtonClickListener")
         val user = event.user
         val userId = user.id
         val message = event.message!!
@@ -29,7 +27,7 @@ class ButtonClickListener : ListenerAdapter() {
         if (requests.isNotEmpty()) {
             requests.forEach {
                 if (it.messageId == messageId) {
-                    if (GameUtil.buttonToRequestChoise(buttonId)) {
+                    if (GameUtil.buttonToRequestChoice(buttonId)) {
                         GameRequestManager.acceptRequest(message)
                     } else {
                         GameRequestManager.declineRequest(message, true)
@@ -49,17 +47,17 @@ class ButtonClickListener : ListenerAdapter() {
                 }
                 if (game.message == messageId) {
                     if (game.finished) {
-                        GameManager.playerChoosedRematch(
+                        GameManager.playerRematchChoice(
                             Player(user.name, Position.X, user.id),
                             game,
-                            GameUtil.buttonToRequestChoise(buttonId),
+                            GameUtil.buttonToRequestChoice(buttonId),
                             message
                         )
                     }
                 }
                 //If the button is not a request button, check if it is the players turn that reacted to this message.
                 //If it is, get the game and compare it to the message id. If the message id equals to this message,
-                //get the location that the player choosed, and check if the player has been taken. If it hasnt,
+                //get the location that the player chose, and check if the player has been taken. If it hasn't,
                 //set the location to the location that the player picked.
             } else {
                 if (GameManager.checkPlayersTurn(userId)) {
@@ -73,7 +71,7 @@ class ButtonClickListener : ListenerAdapter() {
                             }
                             val game = GameManager.getGame(userId)!!
                             if (!GameManager.placeIsTaken(location, game)) {
-                                GameManager.playerChoosed(game, location, message)
+                                GameManager.setLocation(game, location, message)
                             }
                         }
                     }

@@ -12,7 +12,6 @@ import nl.nickkoepr.tictactoe.game.GameManager
 import nl.nickkoepr.tictactoe.game.gamerequest.GameRequestManager
 import nl.nickkoepr.tictactoe.game.objects.Player
 import nl.nickkoepr.tictactoe.game.objects.Position
-import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.BotUtil
 import nl.nickkoepr.tictactoe.utils.ColorUtil
 import nl.nickkoepr.tictactoe.utils.MessageUtil
@@ -20,7 +19,6 @@ import nl.nickkoepr.tictactoe.utils.MessageUtil
 class MessageListener : ListenerAdapter() {
 
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
-        Logger.debug("Fired MessageListener")
         if (event.author.isBot) return
         val args = event.message.contentRaw.lowercase().split(" ")
         val guildId = event.guild.id.toLong()

@@ -19,8 +19,8 @@ import nl.nickkoepr.tictactoe.utils.*
 
 object GameManager {
 
-    //The key is the id of the player who is allowed to make a move in the current round. If it is the other
-    //player's turn, the key will be the other players id.
+    //The key is the id of the player who is allowed to make a next move in the current round. If it is the other
+    //player's turn, the key will be the other players' id.
     private val games: HashMap<String, GameInstance> = hashMapOf()
     private val playersWithGames: MutableList<String> = mutableListOf()
     private val acceptedRematch: MutableList<String> = mutableListOf()
@@ -38,8 +38,8 @@ object GameManager {
                     message.channel.id,
                     System.currentTimeMillis()
                 )
-
                 val handler = BotUtil.getUnknownMessageHandler(message)
+
                 //Add the game to the list of games, with the player who gets to make the first move.
                 games[p1.userId] = game
                 //Add both players to a list of players with a game.
@@ -79,7 +79,7 @@ object GameManager {
         Logger.debug("Started a new game")
     }
 
-    fun playerChoosed(game: GameInstance, location: Int, message: Message) {
+    fun setLocation(game: GameInstance, location: Int, message: Message) {
         if (BotUtil.hasAllPermissions(message)) {
             val player = PlayerUtil.playerToUser(game, game.turn)
 
@@ -106,14 +106,14 @@ object GameManager {
                 message.editMessage(getBoardEmbed(game)).setActionRows(BoardUtil.renderBoard(game.board))
                     .queue(null, BotUtil.getUnknownMessageHandler(message))
 
-                Logger.debug("Player choosed")
+                Logger.debug("Player made a decision")
             } else {
                 finishGame(game, message)
             }
         }
     }
 
-    fun playerChoosedRematch(user: Player, game: GameInstance, input: Boolean, msg: Message) {
+    fun playerRematchChoice(user: Player, game: GameInstance, input: Boolean, msg: Message) {
         if (BotUtil.hasAllPermissions(msg)) {
             if (input) {
                 //When a user accepted a rematch, change the embed and check
@@ -203,9 +203,9 @@ object GameManager {
         // so it will show nothing behind the names of the players.
         if (!firstEmbed) {
             if (game.p1.userId == user?.userId) {
-                //If the player who made the choise is player 1, set his choise in the embed.
+                //If the player who made the choice is player 1, set his choice in the embed.
                 description += "*${game.p1.name}: $emote*\n"
-                //It will also add the choise of player 2 if that player already made a choise.
+                //It will also add the choice of player 2 if that player already made a choice.
                 description += if (!acceptedRematch.contains(game.p2.userId)) {
                     "*${game.p2.name}:*\n"
                 } else {
@@ -317,7 +317,7 @@ object GameManager {
         game.lastActivity = System.currentTimeMillis()
     }
 
-    fun checkPlayerChoosedRematch(p: String): Boolean {
+    fun hasPlayerChosenRematch(p: String): Boolean {
         return acceptedRematch.contains(p)
     }
 
@@ -357,10 +357,12 @@ object GameManager {
         return BoardUtil.checkFullBoard(game.board)
     }
 
+    //Get the game from the player wo is allowed to make a next move.
     private fun getTurnToPlayer(game: GameInstance): Player {
         return PlayerUtil.playerToUser(game, game.turn)
     }
 
+    //Get the game from the other player.
     fun getGameFromUser(userId: String): GameInstance? {
         for (game in games) {
             if (game.value.p1.userId == userId || game.value.p2.userId == userId) {

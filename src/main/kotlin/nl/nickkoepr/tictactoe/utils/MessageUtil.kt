@@ -9,7 +9,7 @@ object MessageUtil {
     fun errorMessage(title: String, message: String): MessageEmbed {
         val embed = EmbedBuilder()
         embed.setColor(ColorUtil.get(Colors.ERROR))
-        embed.setTitle("$title")
+        embed.setTitle(title)
         embed.setDescription(message)
         return embed.build()
     }
@@ -17,7 +17,7 @@ object MessageUtil {
     fun successMessage(title: String, message: String): MessageEmbed {
         val embed = EmbedBuilder()
         embed.setColor(ColorUtil.get(Colors.SUCCESS))
-        embed.setTitle("$title")
+        embed.setTitle(title)
         embed.setDescription(message)
         return embed.build()
     }

@@ -11,8 +11,8 @@ import nl.nickkoepr.tictactoe.game.objects.Position
 object BoardUtil {
 
     fun renderBoard(board: Board): List<ActionRow> {
-        var actionsRows: MutableList<ActionRow> = mutableListOf()
-        var buttons: MutableList<Button> = mutableListOf()
+        val actionsRows: MutableList<ActionRow> = mutableListOf()
+        val buttons: MutableList<Button> = mutableListOf()
         var i = 1
         for (section in board.layout) {
             if (section != InputType.NOTHING) {
