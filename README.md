@@ -1,6 +1,8 @@
 # TicTacToe
 Play TicTacToe on Discord!
 
+![tttgame](https://raw.githubusercontent.com/NickKoepr/nickkoepr.github.io/master/tttgame.gif)
+
 ## About
 With this Discord bot, you can play TicTacToe with your server members. 
 
