@@ -1,6 +1,8 @@
 # TicTacToe
 Play TicTacToe on Discord!
-*Working on hosting the bot by myself =)*
+<br>
+*__Working on hosting the bot by myself asap!__*
+
 ![tttgame](https://raw.githubusercontent.com/NickKoepr/nickkoepr.github.io/master/tttgame.gif)
 
 ## About
