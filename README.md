@@ -7,6 +7,7 @@ Play TicTacToe on Discord!
 
 ## About
 With this Discord bot, you can play TicTacToe with your server members. 
+Please note that the bot is in **beta**!
 
 ## Features
 * Send a request to play a TicTacToe game by typing **.ttt @[username]** or **.tictactoe @[username]**  
