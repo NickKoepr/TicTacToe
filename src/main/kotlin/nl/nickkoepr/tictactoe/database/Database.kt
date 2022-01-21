@@ -46,7 +46,7 @@ class Database {
                 Class.forName("org.sqlite.JDBC")
                 database = DriverManager.getConnection("jdbc:sqlite:tictactoe.db")
             }
-            Logger.debug("Succesfully connected to the database")
+            Logger.debug("Successfully connected to the database")
         } catch (e: SQLException) {
             e.printStackTrace()
         }

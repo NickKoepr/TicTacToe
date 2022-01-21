@@ -22,7 +22,7 @@ class ButtonClickListener : ListenerAdapter() {
         val requests = GameRequestManager.getRequestsFromGetter(user.id)
         //Get all the requests that a player received, and accept or decline the one
         //that is equal to the message from the event.
-        //If the request is empty, the player didn't recieved any requests.
+        //If the request is empty, the player didn't receive any requests.
 
         if (requests.isNotEmpty()) {
             requests.forEach {
@@ -69,7 +69,6 @@ class ButtonClickListener : ListenerAdapter() {
                             } catch (e: NumberFormatException) {
                                 0
                             }
-                            val game = GameManager.getGame(userId)!!
                             if (!GameManager.placeIsTaken(location, game)) {
                                 GameManager.setLocation(game, location, message)
                             }

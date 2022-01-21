@@ -27,7 +27,7 @@ class MessageListener : ListenerAdapter() {
         } else {
             BotUtil.standardPrefix
         }
-
+        String
         //Check if the message starts with the prefix and 'tictactoe' or 'ttt'
         if (args[0] == "${prefix}tictactoe" || args[0] == "${prefix}ttt") {
             val handler = BotUtil.getUnknownMessageHandler(event.message)
@@ -87,7 +87,7 @@ class MessageListener : ListenerAdapter() {
                                 ).queue(null, handler)
                                 return
                             }
-                            if (!GameManager.hasGame(authorId)) {
+                            if (GameManager.hasGame(authorId)) {
                                 event.channel.sendMessage(
                                     MessageUtil.errorMessage(
                                         "You are already in a game!",

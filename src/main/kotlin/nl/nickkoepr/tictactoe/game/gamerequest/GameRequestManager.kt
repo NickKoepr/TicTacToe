@@ -86,7 +86,7 @@ object GameRequestManager {
         return null
     }
 
-    fun getRequestsFromSender(user: String): List<GameRequest> {
+    private fun getRequestsFromSender(user: String): List<GameRequest> {
         val gameRequests: MutableList<GameRequest> = mutableListOf()
         requestList.forEach { if (it.sender.userId == user) gameRequests.add(it) }
         return gameRequests

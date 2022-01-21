@@ -12,6 +12,7 @@ import nl.nickkoepr.tictactoe.game.timer.Timer
 import nl.nickkoepr.tictactoe.listeners.ButtonClickListener
 import nl.nickkoepr.tictactoe.listeners.GuildLeaveListener
 import nl.nickkoepr.tictactoe.listeners.MessageListener
+import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.BotUtil
 import java.io.File
 import java.nio.charset.Charset
@@ -21,7 +22,7 @@ private lateinit var token: String
 
 fun main() {
 
-    println(
+    Logger.info(
         "TicTacToe Discord bot.\n" +
                 "Version ${BotUtil.getVersion()}"
     )
