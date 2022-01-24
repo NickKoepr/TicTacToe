@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "nl.nickkoepr.tictactoe"
-version = "1.0.0"
+version = "0.1.0"
 val jdaVersion = "4.3.0_277"
 
 repositories {
