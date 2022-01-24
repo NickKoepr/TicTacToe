@@ -38,8 +38,7 @@ object BotUtil {
         val permissionsList = listOf(
             Permission.VIEW_CHANNEL,
             Permission.MESSAGE_WRITE,
-            Permission.MESSAGE_READ,
-            Permission.MESSAGE_MANAGE
+            Permission.MESSAGE_READ
         )
         val neededPermissions = mutableListOf<Permission>()
 
