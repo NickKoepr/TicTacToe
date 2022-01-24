@@ -11,7 +11,7 @@ Please note that the bot is in **beta**!
 
 ## Features
 * Send a request to play a TicTacToe game by typing **.ttt @[username]** or **.tictactoe @[username]**  
-* Play TicTacToe by simply clicking the button in Discord. 
+* Play TicTacToe by simply clicking the buttons in Discord. 
 * A request system, so you can accept or decline a request from a user. 
 * Play a rematch with your opponent if you want to beat him again, or if you want to win this time. 
 * You can set a custom prefix if you want to. 
