@@ -2,6 +2,8 @@ package nl.nickkoepr.tictactoe
 
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.requests.GatewayIntent
+import net.dv8tion.jda.api.utils.cache.CacheFlag
 import nl.nickkoepr.tictactoe.commands.HelpCommand
 import nl.nickkoepr.tictactoe.commands.PrefixCommand
 import nl.nickkoepr.tictactoe.commands.StopCommand
@@ -44,10 +46,16 @@ fun main() {
         Files.write(tokenFile.toPath(), input.toByteArray())
     }
     token = tokenFile.inputStream().readBytes().toString(Charset.defaultCharset())
-
-    val jdaBuilder = JDABuilder.createDefault(token)
+    val jdaBuilder = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES)
     jdaBuilder.setActivity(Activity.playing("TicTacToe!"))
-    jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener())
+    jdaBuilder.disableCache(
+        CacheFlag.ACTIVITY,
+        CacheFlag.VOICE_STATE,
+        CacheFlag.EMOTE,
+        CacheFlag.CLIENT_STATUS,
+        CacheFlag.ONLINE_STATUS
+    )
+            jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener())
 
     //Register the commands.
     CommandManager.commands["help"] = HelpCommand("help", "description")
