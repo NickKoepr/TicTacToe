@@ -1,7 +1,5 @@
 # TicTacToe
 Play TicTacToe on Discord!
-<br>
-*__Working on hosting the bot by myself asap!__*
 
 ![tttgame](https://raw.githubusercontent.com/NickKoepr/nickkoepr.github.io/master/tttgame.gif)
 
@@ -11,10 +9,13 @@ Please note that the bot is in **beta**!
 
 ## Features
 * Send a request to play a TicTacToe game by typing **.ttt @[username]** or **.tictactoe @[username]**  
-* Play TicTacToe by simply clicking the button in Discord. 
+* Play TicTacToe by simply clicking the buttons in Discord. 
 * A request system, so you can accept or decline a request from a user. 
 * Play a rematch with your opponent if you want to beat him again, or if you want to win this time. 
 * You can set a custom prefix if you want to. 
+
+## Invite
+Click [here](https://discord.com/api/oauth2/authorize?client_id=914110118998732811&permissions=67584&scope=bot) to invite the bot!
 
 ## Commands
 The standard prefix is a `.`
