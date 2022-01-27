@@ -12,7 +12,7 @@ import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.BotUtil
 import nl.nickkoepr.tictactoe.utils.MessageUtil
 
-class StopCommand(override val description: String, override val name: String) : BotCommand {
+class StopCommand(override val name: String, override val description: String) : BotCommand {
 
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent, args: List<String>) {
         Logger.debug("Fired the stop command")

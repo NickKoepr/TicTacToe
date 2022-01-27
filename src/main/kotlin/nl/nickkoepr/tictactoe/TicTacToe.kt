@@ -58,9 +58,9 @@ fun main() {
             jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener())
 
     //Register the commands.
-    CommandManager.commands["help"] = HelpCommand("help", "description")
-    CommandManager.commands["stop"] = StopCommand("stop", "stop")
-    CommandManager.commands["prefix"] = PrefixCommand("prefix", "prefix command")
+    CommandManager.commands["help"] = HelpCommand("help", "Gives a list with commands that you can use.")
+    CommandManager.commands["stop"] = StopCommand("stop", "Cancel a request or stop a running game.")
+    CommandManager.commands["prefix"] = PrefixCommand("prefix", "Change the prefix.")
 
     //Set the current system milliseconds when the bot starts.
     BotUtil.timeStartedMilliseconds = System.currentTimeMillis()
