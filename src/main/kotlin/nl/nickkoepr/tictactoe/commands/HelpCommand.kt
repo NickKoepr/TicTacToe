@@ -30,7 +30,7 @@ class HelpCommand(override val name: String, override val description: String) :
         embed.setColor(ColorUtil.get(Colors.STANDARD))
         embed.setTitle("TicTacToe help")
         embed.addField(
-            "__**!tictactoe @username**__",
+            "__**${prefix}tictactoe @username**__",
             "**Tag a Discord user to start a match of TicTacToe!**",
             false
         )
