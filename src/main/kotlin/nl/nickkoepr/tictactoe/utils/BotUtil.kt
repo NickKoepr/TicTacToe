@@ -38,7 +38,9 @@ object BotUtil {
         val permissionsList = listOf(
             Permission.VIEW_CHANNEL,
             Permission.MESSAGE_WRITE,
-            Permission.MESSAGE_READ
+            Permission.MESSAGE_READ,
+            Permission.MESSAGE_EMBED_LINKS,
+            Permission.MESSAGE_HISTORY
         )
         val neededPermissions = mutableListOf<Permission>()
 
@@ -53,16 +55,26 @@ object BotUtil {
         if (neededPermissions.isNotEmpty()) {
             var perms = ""
             neededPermissions.forEach { perms += "$it\n" }
+            val handler = getUnknownMessageHandler(message)
 
             if (message.guild.selfMember.hasPermission(Permission.MESSAGE_WRITE) &&
                 message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_WRITE)
             ) {
-                message.channel.sendMessage(
-                    MessageUtil.errorMessage(
-                        "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
+                if (message.guild.selfMember.hasPermission(Permission.MESSAGE_EMBED_LINKS) &&
+                    message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_EMBED_LINKS)
+                ) {
+                    message.channel.sendMessage(
+                        MessageUtil.errorMessage(
+                            "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
+                                    "Please give these permissions, otherwise I can't work.**"
+                        )
+                    ).queue(null, handler)
+                } else {
+                    message.channel.sendMessage(
+                        "**I don't have the permission(s)** `$perms`** \n" +
                                 "Please give these permissions, otherwise I can't work.**"
-                    )
-                ).queue(null, getUnknownMessageHandler(message))
+                    ).queue(null, handler)
+                }
             }
             return false
         }
