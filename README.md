@@ -15,7 +15,7 @@ Please note that the bot is in **beta**!
 * You can set a custom prefix if you want to. 
 
 ## Invite
-Click [here](https://discord.com/api/oauth2/authorize?client_id=914110118998732811&permissions=67584&scope=bot) to invite the bot!
+Click [here](https://top.gg/bot/914110118998732811) to invite the bot!
 
 ## Commands
 The standard prefix is a `.`
