@@ -16,6 +16,7 @@ import nl.nickkoepr.tictactoe.listeners.GuildLeaveListener
 import nl.nickkoepr.tictactoe.listeners.MessageListener
 import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.BotUtil
+import org.discordbots.api.client.DiscordBotListAPI
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -23,6 +24,10 @@ import java.nio.file.Files
 private lateinit var token: String
 
 fun main() {
+
+    val useTopgg = false
+    val topggtoken = ""
+    val topggbotId = ""
 
     Logger.info(
         "TicTacToe Discord bot.\n" +
@@ -55,7 +60,7 @@ fun main() {
         CacheFlag.CLIENT_STATUS,
         CacheFlag.ONLINE_STATUS
     )
-            jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener())
+    jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener())
 
     //Register the commands.
     CommandManager.commands["help"] = HelpCommand("help", "Gives a list with commands that you can use.")
@@ -79,4 +84,11 @@ fun main() {
 
     //Create and start the timer.
     Timer()
+
+    //Top.gg api
+    if (useTopgg) {
+        Logger.debug("Sending guilds count to Top.gg...")
+        DiscordBotListAPI.Builder().token(topggtoken).botId(topggbotId).build().setStats(BotUtil.jda.guilds.size)
+            .whenComplete { _, _ -> Logger.debug("Sent guilds count to Top.gg!") }
+    }
 }

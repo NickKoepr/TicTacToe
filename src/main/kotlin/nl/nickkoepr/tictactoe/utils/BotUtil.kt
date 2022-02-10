@@ -112,6 +112,6 @@ object BotUtil {
     }
 
     fun getVersion(): String {
-        return "0.1.2"
+        return "0.1.3"
     }
 }
