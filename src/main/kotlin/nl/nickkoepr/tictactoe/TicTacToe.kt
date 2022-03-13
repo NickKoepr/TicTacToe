@@ -2,6 +2,7 @@ package nl.nickkoepr.tictactoe
 
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import nl.nickkoepr.tictactoe.commands.HelpCommand
@@ -76,6 +77,17 @@ fun main() {
     consoleThread.start()
 
     BotUtil.jda = jdaBuilder.build()
+
+    //Register slash commands.
+    BotUtil.jda.upsertCommand("start", "Start a game of tic tac toe!")
+        .addOption(
+            OptionType.USER, "opponent",
+            "Choose a Discord member you want to play against.", true
+        )
+        .queue()
+    BotUtil.jda.upsertCommand("help", "Gives a list with commands that you can use.").queue()
+    BotUtil.jda.upsertCommand("stop", "Cancel a request or stop a running game.").queue()
+    BotUtil.jda.upsertCommand("prefix", "Change the prefix.").queue()
 
     DatabaseManager.connect()
 
