@@ -15,6 +15,7 @@ import nl.nickkoepr.tictactoe.game.timer.Timer
 import nl.nickkoepr.tictactoe.listeners.ButtonClickListener
 import nl.nickkoepr.tictactoe.listeners.GuildLeaveListener
 import nl.nickkoepr.tictactoe.listeners.MessageListener
+import nl.nickkoepr.tictactoe.listeners.SlashCommandListener
 import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.BotUtil
 import org.discordbots.api.client.DiscordBotListAPI
@@ -61,7 +62,7 @@ fun main() {
         CacheFlag.CLIENT_STATUS,
         CacheFlag.ONLINE_STATUS
     )
-    jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener())
+    jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener(), SlashCommandListener())
 
     //Register the commands.
     CommandManager.commands["help"] = HelpCommand("help", "Gives a list with commands that you can use.")
