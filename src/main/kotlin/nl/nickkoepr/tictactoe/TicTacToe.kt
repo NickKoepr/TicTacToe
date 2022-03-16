@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import nl.nickkoepr.tictactoe.commands.HelpCommand
-import nl.nickkoepr.tictactoe.commands.PrefixCommand
+import nl.nickkoepr.tictactoe.commands.StartCommand
 import nl.nickkoepr.tictactoe.commands.StopCommand
 import nl.nickkoepr.tictactoe.commands.botcommand.CommandManager
 import nl.nickkoepr.tictactoe.commands.console.ConsoleThread
@@ -65,9 +65,10 @@ fun main() {
     jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener(), SlashCommandListener())
 
     //Register the commands.
+    CommandManager.commands["start"] = StartCommand("start", "Start a game of tic tac toe!")
     CommandManager.commands["help"] = HelpCommand("help", "Gives a list with commands that you can use.")
     CommandManager.commands["stop"] = StopCommand("stop", "Cancel a request or stop a running game.")
-    CommandManager.commands["prefix"] = PrefixCommand("prefix", "Change the prefix.")
+    //CommandManager.commands["prefix"] = PrefixCommand("prefix", "Change the prefix.")
 
     //Set the current system milliseconds when the bot starts.
     BotUtil.timeStartedMilliseconds = System.currentTimeMillis()
@@ -88,7 +89,7 @@ fun main() {
         .queue()
     BotUtil.jda.upsertCommand("help", "Gives a list with commands that you can use.").queue()
     BotUtil.jda.upsertCommand("stop", "Cancel a request or stop a running game.").queue()
-    BotUtil.jda.upsertCommand("prefix", "Change the prefix.").queue()
+    //BotUtil.jda.upsertCommand("prefix", "Change the prefix.").queue()
 
     DatabaseManager.connect()
 
