@@ -14,7 +14,7 @@ class ButtonClickListener : ListenerAdapter() {
     override fun onButtonInteraction(event: ButtonInteractionEvent) {
         val user = event.user
         val userId = user.id
-        val message = event.message!!
+        val message = event.message
         val messageId = message.id
         val buttonId = event.componentId
         if (user.isBot) return

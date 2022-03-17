@@ -13,7 +13,6 @@ import nl.nickkoepr.tictactoe.commands.console.ConsoleThread
 import nl.nickkoepr.tictactoe.database.DatabaseManager
 import nl.nickkoepr.tictactoe.game.timer.Timer
 import nl.nickkoepr.tictactoe.listeners.ButtonClickListener
-import nl.nickkoepr.tictactoe.listeners.GuildLeaveListener
 import nl.nickkoepr.tictactoe.listeners.MessageListener
 import nl.nickkoepr.tictactoe.listeners.SlashCommandListener
 import nl.nickkoepr.tictactoe.logger.Logger
@@ -61,9 +60,10 @@ fun main() {
         CacheFlag.VOICE_STATE,
         CacheFlag.EMOTE,
         CacheFlag.CLIENT_STATUS,
-        CacheFlag.ONLINE_STATUS
+        CacheFlag.ONLINE_STATUS,
+        CacheFlag.ROLE_TAGS
     )
-    jdaBuilder.addEventListeners(MessageListener(), GuildLeaveListener(), ButtonClickListener(), SlashCommandListener())
+    jdaBuilder.addEventListeners(MessageListener(), ButtonClickListener(), SlashCommandListener())
 
     //Register the commands.
     CommandManager.commands["start"] = StartCommand("start", "Start a game of tic tac toe!")

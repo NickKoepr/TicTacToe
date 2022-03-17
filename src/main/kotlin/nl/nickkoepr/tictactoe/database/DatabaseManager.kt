@@ -43,23 +43,11 @@ object DatabaseManager {
         )
     }
 
-    fun setPrefix(guildId: Long, prefix: Char) {
-        checkTable()
-        if (!hasPrefix(guildId)) {
-            databaseInstance.update(
-                "INSERT INTO GuildPrefix (" +
-                        "GuildId, Prefix) " +
-                        "VALUES (?, ?);", listOf(guildId, prefix.toString())
-            )
-        } else {
-            databaseInstance.update(
-                "UPDATE GuildPrefix " +
-                        "SET Prefix=?" +
-                        "WHERE GuildId=?;",
-                listOf(prefix, guildId)
-            )
-        }
-    }
+    /**
+     * NOTE: Because of the slash commands,the bot only needs the prefix if the server has set one
+     * (to send the message that the bot is using slash commands instead of commands in a text channel).
+     * The prefix classes will be fully removed when the Message Content Intent does not work anymore.
+     */
 
     fun getPrefix(guildId: Long): Char? {
         checkTable()
@@ -82,11 +70,6 @@ object DatabaseManager {
             }
         }
         return false
-    }
-
-    fun removePrefix(guildId: Long) {
-        checkTable()
-        databaseInstance.update("DELETE FROM GuildPrefix WHERE GuildId=?;", listOf(guildId))
     }
 
     fun checkAnalytics() {

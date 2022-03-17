@@ -20,12 +20,6 @@ class HelpCommand(override val name: String, override val description: String) :
 
         val handler = BotUtil.getUnknownMessageHandler()
         val embed = EmbedBuilder()
-//        val guildId = event.guild?.id?.toLong()!!
-//        val prefix = if (DatabaseManager.hasPrefix(guildId)) {
-//            DatabaseManager.getPrefix(guildId)
-//        } else {
-//            BotUtil.standardPrefix
-//        }
 
         embed.setColor(ColorUtil.get(Colors.STANDARD))
         embed.setTitle("TicTacToe help")

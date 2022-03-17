@@ -23,7 +23,6 @@ class StopCommand(override val name: String, override val description: String) :
         val user = event.user
         val userId = user.id
         val handler = BotUtil.getUnknownMessageHandler()
-        //val channel = event.channel
 
         if (GameRequestManager.hasSendRequest(userId)) {
             GameRequestManager.cancelRequest(userId)
