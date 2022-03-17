@@ -69,7 +69,6 @@ fun main() {
     CommandManager.commands["start"] = StartCommand("start", "Start a game of tic tac toe!")
     CommandManager.commands["help"] = HelpCommand("help", "Gives a list with commands that you can use.")
     CommandManager.commands["stop"] = StopCommand("stop", "Cancel a request or stop a running game.")
-    //CommandManager.commands["prefix"] = PrefixCommand("prefix", "Change the prefix.")
 
     //Set the current system milliseconds when the bot starts.
     BotUtil.timeStartedMilliseconds = System.currentTimeMillis()
@@ -91,7 +90,6 @@ fun main() {
         .queue()
     BotUtil.jda.upsertCommand("help", "Gives a list with commands that you can use.").queue()
     BotUtil.jda.upsertCommand("stop", "Cancel a request or stop a running game.").queue()
-    //BotUtil.jda.upsertCommand("prefix", "Change the prefix.").queue()
 
     DatabaseManager.connect()
 

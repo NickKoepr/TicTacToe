@@ -26,7 +26,7 @@ object GameManager {
     private val acceptedRematch: MutableList<String> = mutableListOf()
 
     fun startGame(p1: Player, p2: Player, message: Message) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             if (!playersWithGames.contains(p1.userId) && !playersWithGames.contains(p2.userId)) {
                 val game = GameInstance(
                     p1,
@@ -66,7 +66,7 @@ object GameManager {
     }
 
     private fun finishGame(game: GameInstance, message: Message) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             game.finished = true
             changeEmbedByRematch(game = game, firstEmbed = true, message = message)
             Logger.debug("Game is finished")
@@ -80,7 +80,7 @@ object GameManager {
     }
 
     fun setLocation(game: GameInstance, location: Int, message: Message) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             val player = PlayerUtil.playerToUser(game, game.turn)
 
             val inputType = when (game.turn) {
@@ -114,7 +114,7 @@ object GameManager {
     }
 
     fun playerRematchChoice(user: Player, game: GameInstance, input: Boolean, msg: Message) {
-        if (BotUtil.hasAllPermissions(msg)) {
+        if (BotUtil.hasAllPermissions(msg.guild, msg.textChannel, message = msg)) {
             if (input) {
                 //When a user accepted a rematch, change the embed and check
                 // if the other player has also accepted the rematch.
@@ -139,7 +139,7 @@ object GameManager {
 
     fun gameStopRequest(game: GameInstance, userId: String) {
         BotUtil.jda.getTextChannelById(game.channelId)?.retrieveMessageById(game.message)?.queue({ message ->
-            if (BotUtil.hasAllPermissions(message)) {
+            if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
                 val handler = BotUtil.getUnknownMessageHandler(message)
                 val embed = getBoardEmbed(game)
                 val changedEmbed = EmbedBuilder()
@@ -163,7 +163,7 @@ object GameManager {
 
     fun stopInactiveGame(game: GameInstance) {
         BotUtil.jda.getTextChannelById(game.channelId)?.retrieveMessageById(game.message)?.queue({
-            if (BotUtil.hasAllPermissions(it)) {
+            if (BotUtil.hasAllPermissions(it.guild, it.textChannel, message = it)) {
                 val handler = BotUtil.getUnknownMessageHandler(it)
                 val embed = MessageUtil.errorMessage(
                     "Stopped game due to inactivity",
@@ -252,7 +252,7 @@ object GameManager {
     }
 
     fun sendDeclineGameRequestMessage(gameRequest: GameRequest, message: Message, showPlayerName: Boolean) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             val handler = BotUtil.getUnknownMessageHandler(message)
             val embed = MessageUtil.errorMessage(
                 "TicTacToe request",
@@ -268,7 +268,7 @@ object GameManager {
     fun sendCancelGameRequestMessage(gameRequest: GameRequest) {
         BotUtil.jda.getTextChannelById(gameRequest.channelId)?.retrieveMessageById(gameRequest.messageId)
             ?.queue({ message ->
-                if (BotUtil.hasAllPermissions(message)) {
+                if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
                     val handler = BotUtil.getUnknownMessageHandler(message)
                     val embed = MessageUtil.errorMessage(
                         "TicTacToe request",

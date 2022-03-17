@@ -46,7 +46,7 @@ object GameRequestManager {
 
     fun stopInactiveRequest(gameRequest: GameRequest) {
         BotUtil.jda.getTextChannelById(gameRequest.channelId)?.retrieveMessageById(gameRequest.messageId)?.queue({
-            if (BotUtil.hasAllPermissions(it)) {
+            if (BotUtil.hasAllPermissions(it.guild, it.textChannel, message = it)) {
                 val handler = BotUtil.getUnknownMessageHandler(it)
                 val embed = MessageUtil.errorMessage(
                     "Request cancelled due to inactivity",

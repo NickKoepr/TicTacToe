@@ -2,8 +2,11 @@ package nl.nickkoepr.tictactoe.utils
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.GuildChannel
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.exceptions.ErrorHandler
+import net.dv8tion.jda.api.interactions.InteractionHook
 import net.dv8tion.jda.api.requests.ErrorResponse
 import nl.nickkoepr.tictactoe.database.AnalyticsData
 import nl.nickkoepr.tictactoe.database.DatabaseManager
@@ -34,7 +37,12 @@ object BotUtil {
     }
 
     //Check if the bot had all the permissions that are essential to make the bot work.
-    fun hasAllPermissions(message: Message): Boolean {
+    fun hasAllPermissions(
+        guild: Guild,
+        textChannel: GuildChannel,
+        message: Message? = null,
+        interactionHook: InteractionHook? = null
+    ): Boolean {
         val permissionsList = listOf(
             Permission.VIEW_CHANNEL,
             Permission.MESSAGE_SEND,
@@ -44,8 +52,8 @@ object BotUtil {
         val neededPermissions = mutableListOf<Permission>()
 
         for (permission in permissionsList) {
-            if (!message.guild.selfMember.hasPermission(permission) ||
-                !message.guild.selfMember.hasPermission(message.textChannel, permission)
+            if (!guild.selfMember.hasPermission(permission) ||
+                !guild.selfMember.hasPermission(textChannel, permission)
             ) {
                 neededPermissions.add(permission)
             }
@@ -56,24 +64,43 @@ object BotUtil {
             neededPermissions.forEach { perms += "$it\n" }
             val handler = getUnknownMessageHandler(message)
 
-            if (message.guild.selfMember.hasPermission(Permission.MESSAGE_SEND) &&
-                message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_SEND)
+            if (guild.selfMember.hasPermission(Permission.MESSAGE_SEND) &&
+                guild.selfMember.hasPermission(textChannel, Permission.MESSAGE_SEND)
             ) {
-                if (message.guild.selfMember.hasPermission(Permission.MESSAGE_EMBED_LINKS) &&
-                    message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_EMBED_LINKS)
+                if (guild.selfMember.hasPermission(Permission.MESSAGE_EMBED_LINKS) &&
+                    guild.selfMember.hasPermission(textChannel, Permission.MESSAGE_EMBED_LINKS)
                 ) {
-                    message.channel.sendMessageEmbeds(
-                        MessageUtil.errorMessage(
-                            "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
-                                    "Please give these permissions, otherwise I can't work.**"
-                        )
-                    ).queue(null, handler)
-                } else {
-                    message.channel.sendMessage(
-                        "**I don't have the permission(s)** `$perms`** \n" +
+                    val errorMessage = MessageUtil.errorMessage(
+                        "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
                                 "Please give these permissions, otherwise I can't work.**"
-                    ).queue(null, handler)
+                    )
+                    if (interactionHook == null) {
+                        message?.channel?.sendMessageEmbeds(
+                            errorMessage
+                        )?.queue(null, handler)
+                    } else {
+                        interactionHook.sendMessageEmbeds(
+                            errorMessage
+                        ).queue(null, handler)
+                    }
+                } else {
+                    val errorMessage = "**I don't have the permission(s)** `$perms`** \n" +
+                            "Please give these permissions, otherwise I can't work.**"
+                    if (interactionHook == null) {
+                        message?.channel?.sendMessage(
+                            errorMessage
+                        )?.queue(null, handler)
+                    } else {
+                        interactionHook.sendMessage(
+                            errorMessage
+                        ).queue(null, handler)
+                    }
                 }
+            } else {
+                interactionHook?.sendMessage(
+                    "**I don't have the permission(s)** `$perms`** \n" +
+                            "Please give these permissions, otherwise I can't work.**"
+                )?.queue(null, handler)
             }
             return false
         }

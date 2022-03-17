@@ -25,7 +25,7 @@ class MessageListener : ListenerAdapter() {
             val handler = BotUtil.getUnknownMessageHandler(event.message)
             val authorId = event.author.id
 
-            if (BotUtil.hasAllPermissions(event.message)) {
+            if (BotUtil.hasAllPermissions(event.guild, event.textChannel, message = event.message)) {
 
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setTitle("New: Slash commands!")
