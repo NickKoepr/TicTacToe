@@ -37,8 +37,7 @@ object BotUtil {
     fun hasAllPermissions(message: Message): Boolean {
         val permissionsList = listOf(
             Permission.VIEW_CHANNEL,
-            Permission.MESSAGE_WRITE,
-            Permission.MESSAGE_READ,
+            Permission.MESSAGE_SEND,
             Permission.MESSAGE_EMBED_LINKS,
             Permission.MESSAGE_HISTORY
         )
@@ -57,13 +56,13 @@ object BotUtil {
             neededPermissions.forEach { perms += "$it\n" }
             val handler = getUnknownMessageHandler(message)
 
-            if (message.guild.selfMember.hasPermission(Permission.MESSAGE_WRITE) &&
-                message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_WRITE)
+            if (message.guild.selfMember.hasPermission(Permission.MESSAGE_SEND) &&
+                message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_SEND)
             ) {
                 if (message.guild.selfMember.hasPermission(Permission.MESSAGE_EMBED_LINKS) &&
                     message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_EMBED_LINKS)
                 ) {
-                    message.channel.sendMessage(
+                    message.channel.sendMessageEmbeds(
                         MessageUtil.errorMessage(
                             "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
                                     "Please give these permissions, otherwise I can't work.**"
@@ -100,9 +99,9 @@ object BotUtil {
                 "Active requests: ${GameRequestManager.getRequestsSize()}\n" +
                 "Current server count: ${jda.guilds.size}\n" +
                 "total commands send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
+                "   - total start command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTARTCOMMANDS)}\n" +
                 "   - total help command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
                 "   - total stop command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
-                "   - total prefix command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALPREFIXCOMMAND)}\n" +
                 "Total games played: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALGAMESPLAYED)}"
     }
 

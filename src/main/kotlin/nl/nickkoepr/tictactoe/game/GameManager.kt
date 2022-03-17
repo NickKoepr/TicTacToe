@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.interactions.components.ActionRow
-import net.dv8tion.jda.api.interactions.components.Button
+import net.dv8tion.jda.api.interactions.components.buttons.Button
 import nl.nickkoepr.tictactoe.color.Colors
 import nl.nickkoepr.tictactoe.database.AnalyticsData
 import nl.nickkoepr.tictactoe.database.DatabaseManager
@@ -45,7 +45,7 @@ object GameManager {
                 //Add both players to a list of players with a game.
                 playersWithGames.addAll(listOf(p1.userId, p2.userId))
 
-                message.editMessage(getBoardEmbed(game)).setActionRows(
+                message.editMessageEmbeds(getBoardEmbed(game)).setActionRows(
                     BoardUtil.renderBoard(game.board)
                 ).queue(null, handler)
 
@@ -103,7 +103,7 @@ object GameManager {
 
                 updateLastActivity(game)
 
-                message.editMessage(getBoardEmbed(game)).setActionRows(BoardUtil.renderBoard(game.board))
+                message.editMessageEmbeds(getBoardEmbed(game)).setActionRows(BoardUtil.renderBoard(game.board))
                     .queue(null, BotUtil.getUnknownMessageHandler(message))
 
                 Logger.debug("Player made a decision")
@@ -154,7 +154,7 @@ object GameManager {
                         "\n\n*${if (game.p1.userId == userId) game.p1.name else game.p2.name} has stopped the game.*"
 
                 changedEmbed.setDescription(description)
-                message.editMessage(changedEmbed.build()).setActionRows().queue(null, handler)
+                message.editMessageEmbeds(changedEmbed.build()).setActionRows().queue(null, handler)
                 stopGame(game)
                 Logger.debug("A game is stopped")
             }
@@ -169,7 +169,7 @@ object GameManager {
                     "Stopped game due to inactivity",
                     "This game is stopped due to inactivity for a long time."
                 )
-                it.editMessage(embed).setActionRows().queue(null, handler)
+                it.editMessageEmbeds(embed).setActionRows().queue(null, handler)
             }
         }, BotUtil.getUnknownMessageHandler())
         stopGame(game)
@@ -248,7 +248,7 @@ object GameManager {
             )
         }
         changedEmbed.setDescription(description)
-        message.editMessage(changedEmbed.build()).setActionRows(actionRows).queue(null, handler)
+        message.editMessageEmbeds(changedEmbed.build()).setActionRows(actionRows).queue(null, handler)
     }
 
     fun sendDeclineGameRequestMessage(gameRequest: GameRequest, message: Message, showPlayerName: Boolean) {
@@ -257,11 +257,11 @@ object GameManager {
             val embed = MessageUtil.errorMessage(
                 "TicTacToe request",
                 "*${
-                    if (showPlayerName) gameRequest.getter.name + " declined the request." else 
+                    if (showPlayerName) gameRequest.getter.name + " declined the request." else
                         "This request is declined due to another game that started."
                 }*"
             )
-            message.editMessage(embed).setActionRows().queue(null, handler)
+            message.editMessageEmbeds(embed).setActionRows().queue(null, handler)
         }
     }
 
@@ -277,7 +277,7 @@ object GameManager {
                         } cancelled the game request.*"
                     )
 
-                    message.editMessage(embed).setActionRows().queue(null, handler)
+                    message.editMessageEmbeds(embed).setActionRows().queue(null, handler)
                 }
             }, BotUtil.getUnknownMessageHandler())
     }

@@ -22,6 +22,7 @@ import org.discordbots.api.client.DiscordBotListAPI
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
+import kotlinx.coroutines.*
 
 private lateinit var token: String
 
@@ -75,8 +76,9 @@ fun main() {
 
     //Create a console tread for listening to commands from the console.
     val consoleThread = ConsoleThread()
-    consoleThread.isDaemon = true
-    consoleThread.start()
+    GlobalScope.async {
+        consoleThread.run()
+    }
 
     BotUtil.jda = jdaBuilder.build()
 

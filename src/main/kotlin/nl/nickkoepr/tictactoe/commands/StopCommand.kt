@@ -1,7 +1,6 @@
 package nl.nickkoepr.tictactoe.commands
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import nl.nickkoepr.tictactoe.commands.botcommand.BotCommand
 import nl.nickkoepr.tictactoe.database.AnalyticsData
 import nl.nickkoepr.tictactoe.database.DatabaseManager
@@ -15,7 +14,7 @@ import nl.nickkoepr.tictactoe.utils.MessageUtil
 
 class StopCommand(override val name: String, override val description: String) : BotCommand {
 
-    override fun slashCommandEvent(event: SlashCommandEvent) {
+    override fun slashCommandEvent(event: SlashCommandInteractionEvent) {
         Logger.debug("Fired the stop command")
 
         DatabaseManager.updateAnalytics(AnalyticsData.TOTALSTOPCOMMANDS)

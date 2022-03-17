@@ -1,7 +1,7 @@
 package nl.nickkoepr.tictactoe.listeners
 
 import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import nl.nickkoepr.tictactoe.color.Colors
 import nl.nickkoepr.tictactoe.database.DatabaseManager
@@ -10,7 +10,7 @@ import nl.nickkoepr.tictactoe.utils.ColorUtil
 
 class MessageListener : ListenerAdapter() {
 
-    override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
+    override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return
         val args = event.message.contentRaw.lowercase().split(" ")
         val guildId = event.guild.id.toLong()
@@ -38,7 +38,7 @@ class MessageListener : ListenerAdapter() {
                             "<https://top.gg/bot/914110118998732811>\n**"
                 )
                 embedBuilder.setColor(ColorUtil.get(Colors.STANDARD))
-                event.channel.sendMessage(embedBuilder.build()).queue(null, handler)
+                event.channel.sendMessageEmbeds(embedBuilder.build()).queue(null, handler)
 
 //                if (args.size >= 2) {
 //                    if (CommandManager.commands.containsKey(args[1])) {

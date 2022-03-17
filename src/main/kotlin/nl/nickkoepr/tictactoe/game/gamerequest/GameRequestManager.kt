@@ -52,7 +52,7 @@ object GameRequestManager {
                     "Request cancelled due to inactivity",
                     "This request is cancelled due to inactivity for a long time."
                 )
-                it.editMessage(embed).setActionRows().queue(null, handler)
+                it.editMessageEmbeds(embed).setActionRows().queue(null, handler)
             }
         }, BotUtil.getUnknownMessageHandler())
         requestList.remove(gameRequest)

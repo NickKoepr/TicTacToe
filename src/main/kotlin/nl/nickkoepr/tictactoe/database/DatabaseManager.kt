@@ -4,10 +4,10 @@ import java.sql.Connection
 
 enum class AnalyticsData(val type: String) {
     TOTALCOMMANDS("TotalCommands"),
+    TOTALSTARTCOMMANDS("TotalStartCommand"),
     TOTALHELPCOMMANDS("TotalHelpCommand"),
     TOTALSTOPCOMMANDS("TotalStopCommand"),
-    TOTALPREFIXCOMMAND("TotalPrefixCommand"),
-    TOTALGAMESPLAYED("TotalGamesPlayed"),
+    TOTALGAMESPLAYED("TotalGamesPlayed")
 }
 
 object DatabaseManager {

@@ -2,7 +2,7 @@ package nl.nickkoepr.tictactoe.utils
 
 import net.dv8tion.jda.api.entities.Emoji
 import net.dv8tion.jda.api.interactions.components.ActionRow
-import net.dv8tion.jda.api.interactions.components.Button
+import net.dv8tion.jda.api.interactions.components.buttons.Button
 import nl.nickkoepr.tictactoe.game.input.InputType
 import nl.nickkoepr.tictactoe.game.input.WinningPattern
 import nl.nickkoepr.tictactoe.game.objects.Board
