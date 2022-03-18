@@ -1,5 +1,7 @@
 package nl.nickkoepr.tictactoe
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.interactions.commands.OptionType
@@ -21,7 +23,6 @@ import org.discordbots.api.client.DiscordBotListAPI
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
-import kotlinx.coroutines.*
 
 private lateinit var token: String
 

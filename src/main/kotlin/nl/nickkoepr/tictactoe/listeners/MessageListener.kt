@@ -22,19 +22,23 @@ class MessageListener : ListenerAdapter() {
         String
         //Check if the message starts with the prefix and 'tictactoe' or 'ttt'
         if (args[0] == "${prefix}tictactoe" || args[0] == "${prefix}ttt") {
-            val handler = BotUtil.getUnknownMessageHandler(event.message)
+            val handler = BotUtil.getUnknownMessageHandler()
 
             if (BotUtil.hasAllPermissions(event.guild, event.textChannel, message = event.message)) {
 
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setTitle("New: Slash commands!")
                 embedBuilder.setDescription(
-                    "The Discord bot now works with slash commands!\n" +
-                            "To start a game, simply type `/start [user]`!\n" +
-                            "For a list of all the commands, type `/help`.\n" +
-                            "**If the commands are not showing up when you type the slash command, " +
-                            "the bot has to be invited again. This can be done via this link:\n" +
-                            "<https://top.gg/bot/914110118998732811>\n**"
+                    "**The TicTacToe Discord bot now works with slash commands!**\n\n" +
+                            "**__To start a game, simply type `/start [user]`!__**\n" +
+                            "**For a list of all the commands, type `/help`.**\n\n" +
+                            "***__Do you not see any slash commands?" +
+                            "Then the bot has to be invited again. This can be done via " +
+                            "[this](https://discord.com/oauth2/authorize" +
+                            "?client_id=914110118998732811" +
+                            "&permissions=83968" +
+                            "&scope=bot%20applications.commands) " +
+                            " link.__***"
                 )
                 embedBuilder.setColor(ColorUtil.get(Colors.STANDARD))
                 event.channel.sendMessageEmbeds(embedBuilder.build()).queue(null, handler)
