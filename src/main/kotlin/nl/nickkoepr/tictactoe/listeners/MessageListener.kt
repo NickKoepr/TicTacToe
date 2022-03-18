@@ -32,7 +32,7 @@ class MessageListener : ListenerAdapter() {
                     "**The TicTacToe Discord bot now works with slash commands!**\n\n" +
                             "**__To start a game, simply type `/start [user]`!__**\n" +
                             "**For a list of all the commands, type `/help`.**\n\n" +
-                            "***__Do you not see any slash commands?" +
+                            "***__Do you not see any slash commands? " +
                             "Then the bot has to be invited again. This can be done via " +
                             "[this](https://discord.com/oauth2/authorize" +
                             "?client_id=914110118998732811" +
