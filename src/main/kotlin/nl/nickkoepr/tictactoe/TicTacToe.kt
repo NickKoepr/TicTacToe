@@ -5,7 +5,6 @@ import kotlinx.coroutines.async
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import nl.nickkoepr.tictactoe.commands.HelpCommand
 import nl.nickkoepr.tictactoe.commands.StartCommand
@@ -54,9 +53,9 @@ fun main() {
         Files.write(tokenFile.toPath(), input.toByteArray())
     }
     token = tokenFile.inputStream().readBytes().toString(Charset.defaultCharset())
-    val jdaBuilder = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES)
-    jdaBuilder.setActivity(Activity.playing("TicTacToe!"))
-    jdaBuilder.disableCache(
+    val builder = JDABuilder.createDefault(token)
+    builder.setActivity(Activity.playing("TicTacToe!"))
+    builder.disableCache(
         CacheFlag.ACTIVITY,
         CacheFlag.VOICE_STATE,
         CacheFlag.EMOTE,
@@ -64,7 +63,7 @@ fun main() {
         CacheFlag.ONLINE_STATUS,
         CacheFlag.ROLE_TAGS
     )
-    jdaBuilder.addEventListeners(MessageListener(), ButtonClickListener(), SlashCommandListener())
+    builder.addEventListeners(MessageListener(), ButtonClickListener(), SlashCommandListener())
 
     //Register the commands.
     CommandManager.commands["start"] = StartCommand("start", "Start a game of tic tac toe!")
@@ -80,8 +79,7 @@ fun main() {
         consoleThread.run()
     }
 
-    BotUtil.jda = jdaBuilder.build()
-
+    BotUtil.jda = builder.build()
     //Register slash commands.
     BotUtil.jda.upsertCommand("start", "Start a game of tic tac toe!")
         .addOption(

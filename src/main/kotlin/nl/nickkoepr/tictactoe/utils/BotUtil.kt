@@ -125,10 +125,10 @@ object BotUtil {
                 "Active games: ${GameManager.getActiveGamesSize()}\n" +
                 "Active requests: ${GameRequestManager.getRequestsSize()}\n" +
                 "Current server count: ${jda.guilds.size}\n" +
-                "total commands send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
-                "   - total start command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTARTCOMMANDS)}\n" +
-                "   - total help command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
-                "   - total stop command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
+                "total commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
+                "   - total start commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTARTCOMMANDS)}\n" +
+                "   - total help commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
+                "   - total stop commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
                 "Total games played: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALGAMESPLAYED)}"
     }
 
