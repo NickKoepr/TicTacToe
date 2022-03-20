@@ -10,8 +10,7 @@ With this Discord bot, you can play Tic Tac Toe with your server members.
 * Send a request to play a TicTacToe game by typing **/start [username]**.
 * Play TicTacToe by simply clicking the buttons in Discord. 
 * A request system, so you can accept or decline a request from a user. 
-* Play a rematch with your opponent if you want to beat him again, or if you want to win this time. 
-* You can set a custom prefix if you want to. 
+* Play a rematch with your opponent if you want to beat him again, or if you want to win this time.
 
 ## Invite
 Click [here](https://top.gg/bot/914110118998732811) to invite the bot!
