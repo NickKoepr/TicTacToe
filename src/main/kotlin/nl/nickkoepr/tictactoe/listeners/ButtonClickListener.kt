@@ -1,6 +1,6 @@
 package nl.nickkoepr.tictactoe.listeners
 
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import nl.nickkoepr.tictactoe.game.GameManager
 import nl.nickkoepr.tictactoe.game.gamerequest.GameRequestManager
@@ -11,10 +11,10 @@ import java.lang.NumberFormatException
 
 class ButtonClickListener : ListenerAdapter() {
 
-    override fun onButtonClick(event: ButtonClickEvent) {
+    override fun onButtonInteraction(event: ButtonInteractionEvent) {
         val user = event.user
         val userId = user.id
-        val message = event.message!!
+        val message = event.message
         val messageId = message.id
         val buttonId = event.componentId
         if (user.isBot) return

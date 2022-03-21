@@ -1,34 +1,30 @@
 # TicTacToe
 Play TicTacToe on Discord!
 
-![tttgame](https://raw.githubusercontent.com/NickKoepr/nickkoepr.github.io/master/tttgame.gif)
+![tttgame](https://raw.githubusercontent.com/NickKoepr/nickkoepr.github.io/master/tttgamenew.gif)
 
 ## About
-With this Discord bot, you can play TicTacToe with your server members. 
-Please note that the bot is in **beta**!
+With this Discord bot, you can play Tic Tac Toe with your server members.
 
 ## Features
-* Send a request to play a TicTacToe game by typing **.ttt @[username]** or **.tictactoe @[username]**  
+* Send a request to play a TicTacToe game by typing **/start [username]**.
 * Play TicTacToe by simply clicking the buttons in Discord. 
 * A request system, so you can accept or decline a request from a user. 
-* Play a rematch with your opponent if you want to beat him again, or if you want to win this time. 
-* You can set a custom prefix if you want to. 
+* Play a rematch with your opponent if you want to beat him again, or if you want to win this time.
 
 ## Invite
 Click [here](https://top.gg/bot/914110118998732811) to invite the bot!
 
 ## Commands
-The standard prefix is a `.`
 
-* `.tictactoe help` or `.ttt help` - Get a list of all the commands. 
-* `.tictactoe @[username]` or `.ttt @[username]` - Request your selected player to play a match of TicTacToe.
-* `.tictactoe stop` or `.ttt stop` - Stop a running game or cancel a request that you have sent.
-* `.tictactoe prefix [prefix]` or `.ttt perfix [prefix]` - Change the prefix (it can only be one character). 
+* `/start [username]` - Request your selected player to play a match of TicTacToe.
+* `/help` - Get a list of all the commands.
+* `/stop` - Stop a running game or cancel a request that you have sent.
 
 ## Compiling 
 This project is using Java 16 and Gradle. Execute `gradlew shadowJar` to compile the project. 
 
 ## Contributing
-You can always create a pull request or create a issue. 
+You can always create a pull request or create an issue. 
 
-Thats it I think =)
+That's it I think =)

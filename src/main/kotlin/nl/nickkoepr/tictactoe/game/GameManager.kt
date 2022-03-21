@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.interactions.components.ActionRow
-import net.dv8tion.jda.api.interactions.components.Button
+import net.dv8tion.jda.api.interactions.components.buttons.Button
 import nl.nickkoepr.tictactoe.color.Colors
 import nl.nickkoepr.tictactoe.database.AnalyticsData
 import nl.nickkoepr.tictactoe.database.DatabaseManager
@@ -26,7 +26,7 @@ object GameManager {
     private val acceptedRematch: MutableList<String> = mutableListOf()
 
     fun startGame(p1: Player, p2: Player, message: Message) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             if (!playersWithGames.contains(p1.userId) && !playersWithGames.contains(p2.userId)) {
                 val game = GameInstance(
                     p1,
@@ -45,7 +45,7 @@ object GameManager {
                 //Add both players to a list of players with a game.
                 playersWithGames.addAll(listOf(p1.userId, p2.userId))
 
-                message.editMessage(getBoardEmbed(game)).setActionRows(
+                message.editMessageEmbeds(getBoardEmbed(game)).setActionRows(
                     BoardUtil.renderBoard(game.board)
                 ).queue(null, handler)
 
@@ -66,7 +66,7 @@ object GameManager {
     }
 
     private fun finishGame(game: GameInstance, message: Message) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             game.finished = true
             changeEmbedByRematch(game = game, firstEmbed = true, message = message)
             Logger.debug("Game is finished")
@@ -80,7 +80,7 @@ object GameManager {
     }
 
     fun setLocation(game: GameInstance, location: Int, message: Message) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             val player = PlayerUtil.playerToUser(game, game.turn)
 
             val inputType = when (game.turn) {
@@ -103,7 +103,7 @@ object GameManager {
 
                 updateLastActivity(game)
 
-                message.editMessage(getBoardEmbed(game)).setActionRows(BoardUtil.renderBoard(game.board))
+                message.editMessageEmbeds(getBoardEmbed(game)).setActionRows(BoardUtil.renderBoard(game.board))
                     .queue(null, BotUtil.getUnknownMessageHandler(message))
 
                 Logger.debug("Player made a decision")
@@ -114,7 +114,7 @@ object GameManager {
     }
 
     fun playerRematchChoice(user: Player, game: GameInstance, input: Boolean, msg: Message) {
-        if (BotUtil.hasAllPermissions(msg)) {
+        if (BotUtil.hasAllPermissions(msg.guild, msg.textChannel, message = msg)) {
             if (input) {
                 //When a user accepted a rematch, change the embed and check
                 // if the other player has also accepted the rematch.
@@ -139,7 +139,7 @@ object GameManager {
 
     fun gameStopRequest(game: GameInstance, userId: String) {
         BotUtil.jda.getTextChannelById(game.channelId)?.retrieveMessageById(game.message)?.queue({ message ->
-            if (BotUtil.hasAllPermissions(message)) {
+            if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
                 val handler = BotUtil.getUnknownMessageHandler(message)
                 val embed = getBoardEmbed(game)
                 val changedEmbed = EmbedBuilder()
@@ -154,7 +154,7 @@ object GameManager {
                         "\n\n*${if (game.p1.userId == userId) game.p1.name else game.p2.name} has stopped the game.*"
 
                 changedEmbed.setDescription(description)
-                message.editMessage(changedEmbed.build()).setActionRows().queue(null, handler)
+                message.editMessageEmbeds(changedEmbed.build()).setActionRows().queue(null, handler)
                 stopGame(game)
                 Logger.debug("A game is stopped")
             }
@@ -163,13 +163,13 @@ object GameManager {
 
     fun stopInactiveGame(game: GameInstance) {
         BotUtil.jda.getTextChannelById(game.channelId)?.retrieveMessageById(game.message)?.queue({
-            if (BotUtil.hasAllPermissions(it)) {
+            if (BotUtil.hasAllPermissions(it.guild, it.textChannel, message = it)) {
                 val handler = BotUtil.getUnknownMessageHandler(it)
                 val embed = MessageUtil.errorMessage(
                     "Stopped game due to inactivity",
                     "This game is stopped due to inactivity for a long time."
                 )
-                it.editMessage(embed).setActionRows().queue(null, handler)
+                it.editMessageEmbeds(embed).setActionRows().queue(null, handler)
             }
         }, BotUtil.getUnknownMessageHandler())
         stopGame(game)
@@ -248,27 +248,27 @@ object GameManager {
             )
         }
         changedEmbed.setDescription(description)
-        message.editMessage(changedEmbed.build()).setActionRows(actionRows).queue(null, handler)
+        message.editMessageEmbeds(changedEmbed.build()).setActionRows(actionRows).queue(null, handler)
     }
 
     fun sendDeclineGameRequestMessage(gameRequest: GameRequest, message: Message, showPlayerName: Boolean) {
-        if (BotUtil.hasAllPermissions(message)) {
+        if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
             val handler = BotUtil.getUnknownMessageHandler(message)
             val embed = MessageUtil.errorMessage(
                 "TicTacToe request",
                 "*${
-                    if (showPlayerName) gameRequest.getter.name + " declined the request." else 
+                    if (showPlayerName) gameRequest.getter.name + " declined the request." else
                         "This request is declined due to another game that started."
                 }*"
             )
-            message.editMessage(embed).setActionRows().queue(null, handler)
+            message.editMessageEmbeds(embed).setActionRows().queue(null, handler)
         }
     }
 
     fun sendCancelGameRequestMessage(gameRequest: GameRequest) {
         BotUtil.jda.getTextChannelById(gameRequest.channelId)?.retrieveMessageById(gameRequest.messageId)
             ?.queue({ message ->
-                if (BotUtil.hasAllPermissions(message)) {
+                if (BotUtil.hasAllPermissions(message.guild, message.textChannel, message = message)) {
                     val handler = BotUtil.getUnknownMessageHandler(message)
                     val embed = MessageUtil.errorMessage(
                         "TicTacToe request",
@@ -277,7 +277,7 @@ object GameManager {
                         } cancelled the game request.*"
                     )
 
-                    message.editMessage(embed).setActionRows().queue(null, handler)
+                    message.editMessageEmbeds(embed).setActionRows().queue(null, handler)
                 }
             }, BotUtil.getUnknownMessageHandler())
     }

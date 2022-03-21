@@ -3,8 +3,8 @@ package nl.nickkoepr.tictactoe.commands.console
 import nl.nickkoepr.tictactoe.utils.BotUtil
 import java.util.*
 
-class ConsoleThread : Thread() {
-    override fun run() {
+class ConsoleThread{
+    fun run() {
         val input = Scanner(System.`in`)
         while (input.hasNextLine()) {
             when (input.nextLine().lowercase()) {

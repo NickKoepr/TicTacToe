@@ -2,8 +2,11 @@ package nl.nickkoepr.tictactoe.utils
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.GuildChannel
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.exceptions.ErrorHandler
+import net.dv8tion.jda.api.interactions.InteractionHook
 import net.dv8tion.jda.api.requests.ErrorResponse
 import nl.nickkoepr.tictactoe.database.AnalyticsData
 import nl.nickkoepr.tictactoe.database.DatabaseManager
@@ -34,19 +37,23 @@ object BotUtil {
     }
 
     //Check if the bot had all the permissions that are essential to make the bot work.
-    fun hasAllPermissions(message: Message): Boolean {
+    fun hasAllPermissions(
+        guild: Guild,
+        textChannel: GuildChannel,
+        message: Message? = null,
+        interactionHook: InteractionHook? = null
+    ): Boolean {
         val permissionsList = listOf(
             Permission.VIEW_CHANNEL,
-            Permission.MESSAGE_WRITE,
-            Permission.MESSAGE_READ,
+            Permission.MESSAGE_SEND,
             Permission.MESSAGE_EMBED_LINKS,
             Permission.MESSAGE_HISTORY
         )
         val neededPermissions = mutableListOf<Permission>()
 
         for (permission in permissionsList) {
-            if (!message.guild.selfMember.hasPermission(permission) ||
-                !message.guild.selfMember.hasPermission(message.textChannel, permission)
+            if (!guild.selfMember.hasPermission(permission) ||
+                !guild.selfMember.hasPermission(textChannel, permission)
             ) {
                 neededPermissions.add(permission)
             }
@@ -57,24 +64,43 @@ object BotUtil {
             neededPermissions.forEach { perms += "$it\n" }
             val handler = getUnknownMessageHandler(message)
 
-            if (message.guild.selfMember.hasPermission(Permission.MESSAGE_WRITE) &&
-                message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_WRITE)
+            if (guild.selfMember.hasPermission(Permission.MESSAGE_SEND) &&
+                guild.selfMember.hasPermission(textChannel, Permission.MESSAGE_SEND)
             ) {
-                if (message.guild.selfMember.hasPermission(Permission.MESSAGE_EMBED_LINKS) &&
-                    message.guild.selfMember.hasPermission(message.textChannel, Permission.MESSAGE_EMBED_LINKS)
+                if (guild.selfMember.hasPermission(Permission.MESSAGE_EMBED_LINKS) &&
+                    guild.selfMember.hasPermission(textChannel, Permission.MESSAGE_EMBED_LINKS)
                 ) {
-                    message.channel.sendMessage(
-                        MessageUtil.errorMessage(
-                            "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
-                                    "Please give these permissions, otherwise I can't work.**"
-                        )
-                    ).queue(null, handler)
-                } else {
-                    message.channel.sendMessage(
-                        "**I don't have the permission(s)** `$perms`** \n" +
+                    val errorMessage = MessageUtil.errorMessage(
+                        "Missing permission(s)!", "**I don't have the permission(s)** `$perms`** " +
                                 "Please give these permissions, otherwise I can't work.**"
-                    ).queue(null, handler)
+                    )
+                    if (interactionHook == null) {
+                        message?.channel?.sendMessageEmbeds(
+                            errorMessage
+                        )?.queue(null, handler)
+                    } else {
+                        interactionHook.sendMessageEmbeds(
+                            errorMessage
+                        ).queue(null, handler)
+                    }
+                } else {
+                    val errorMessage = "**I don't have the permission(s)** `$perms`** \n" +
+                            "Please give these permissions, otherwise I can't work.**"
+                    if (interactionHook == null) {
+                        message?.channel?.sendMessage(
+                            errorMessage
+                        )?.queue(null, handler)
+                    } else {
+                        interactionHook.sendMessage(
+                            errorMessage
+                        ).queue(null, handler)
+                    }
                 }
+            } else {
+                interactionHook?.sendMessage(
+                    "**I don't have the permission(s)** `$perms`** \n" +
+                            "Please give these permissions, otherwise I can't work.**"
+                )?.queue(null, handler)
             }
             return false
         }
@@ -99,10 +125,10 @@ object BotUtil {
                 "Active games: ${GameManager.getActiveGamesSize()}\n" +
                 "Active requests: ${GameRequestManager.getRequestsSize()}\n" +
                 "Current server count: ${jda.guilds.size}\n" +
-                "total commands send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
-                "   - total help command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
-                "   - total stop command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
-                "   - total prefix command send: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALPREFIXCOMMAND)}\n" +
+                "total commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALCOMMANDS)}\n" +
+                "   - total start commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTARTCOMMANDS)}\n" +
+                "   - total help commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALHELPCOMMANDS)}\n" +
+                "   - total stop commands sent: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALSTOPCOMMANDS)}\n" +
                 "Total games played: ${DatabaseManager.getAnalyticsData(AnalyticsData.TOTALGAMESPLAYED)}"
     }
 
@@ -112,6 +138,6 @@ object BotUtil {
     }
 
     fun getVersion(): String {
-        return "0.1.3"
+        return "1.0.0"
     }
 }
