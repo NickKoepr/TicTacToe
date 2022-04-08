@@ -29,47 +29,11 @@ object DatabaseManager {
         val statement = database.createStatement()
 
         statement.executeUpdate(
-            "CREATE TABLE IF NOT EXISTS GuildPrefix  (\n" +
-                    "GuildId BIGINT NOT NULL, " +
-                    "Prefix VARCHAR(1) NOT NULL" +
-                    ");"
-        )
-
-        statement.executeUpdate(
             "CREATE TABLE IF NOT EXISTS Analytics  (\n" +
                     "AnalyticsType VARCHAR(255) NOT NULL, " +
                     "AnalyticsValue BIGINT NOT NULL" +
                     ");"
         )
-    }
-
-    /**
-     * NOTE: Because of the slash commands,the bot only needs the prefix if the server has set one
-     * (to send the message that the bot is using slash commands instead of commands in a text channel).
-     * The prefix classes will be fully removed when the Message Content Intent does not work anymore.
-     */
-
-    fun getPrefix(guildId: Long): Char? {
-        checkTable()
-        val result = databaseInstance.query("SELECT Prefix FROM GuildPrefix WHERE GuildId=$guildId;")
-        if (result != null) {
-            while (result.next()) {
-                val char = result.getString("Prefix")
-                return char.toCharArray()[0]
-            }
-        }
-        return null
-    }
-
-    fun hasPrefix(guildId: Long): Boolean {
-        checkTable()
-        val result = databaseInstance.query("SELECT Prefix FROM GuildPrefix WHERE GuildId=$guildId;")
-        if (result != null) {
-            while (result.next()) {
-                return true
-            }
-        }
-        return false
     }
 
     fun checkAnalytics() {
