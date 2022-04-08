@@ -14,7 +14,6 @@ import nl.nickkoepr.tictactoe.commands.console.ConsoleThread
 import nl.nickkoepr.tictactoe.database.DatabaseManager
 import nl.nickkoepr.tictactoe.game.timer.Timer
 import nl.nickkoepr.tictactoe.listeners.ButtonClickListener
-import nl.nickkoepr.tictactoe.listeners.MessageListener
 import nl.nickkoepr.tictactoe.listeners.SlashCommandListener
 import nl.nickkoepr.tictactoe.logger.Logger
 import nl.nickkoepr.tictactoe.utils.BotUtil
@@ -63,7 +62,7 @@ fun main() {
         CacheFlag.ONLINE_STATUS,
         CacheFlag.ROLE_TAGS
     )
-    builder.addEventListeners(MessageListener(), ButtonClickListener(), SlashCommandListener())
+    builder.addEventListeners(ButtonClickListener(), SlashCommandListener())
 
     //Register the commands.
     CommandManager.commands["start"] = StartCommand("start", "Start a game of tic tac toe!")
