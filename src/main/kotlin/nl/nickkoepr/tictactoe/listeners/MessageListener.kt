@@ -12,6 +12,7 @@ class MessageListener : ListenerAdapter() {
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return
+        if (!event.isFromGuild) return
         val args = event.message.contentRaw.lowercase().split(" ")
         val guildId = event.guild.id.toLong()
         val prefix = if (DatabaseManager.hasPrefix(guildId)) {
