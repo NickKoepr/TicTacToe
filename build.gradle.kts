@@ -22,7 +22,7 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.28")
     implementation("org.xerial:sqlite-jdbc:3.36.0.3")
     implementation("org.discordbots:DBL-Java-Library:2.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 }
 
 application {
