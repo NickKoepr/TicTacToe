@@ -10,7 +10,7 @@ class SlashCommandListener : ListenerAdapter() {
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
         val commandName = event.name
         event.deferReply().queue()
-        if (!event.channelType.isThread) {
+        if (event.isFromGuild && !event.channelType.isThread) {
             if (BotUtil.hasAllPermissions(event.guild!!, event.textChannel, interactionHook = event.hook)) {
                 if (CommandManager.commands.containsKey(commandName)) {
                     CommandManager.commands[commandName]?.slashCommandEvent(event)
@@ -26,8 +26,8 @@ class SlashCommandListener : ListenerAdapter() {
         } else {
             event.hook.sendMessageEmbeds(
                 MessageUtil.errorMessage(
-                    "The bot does not work in threads!",
-                    "Please use a TextChannel instead of a thread."
+                    "The bot does not work here!",
+                    "Please use a TextChannel instead."
                 )
             ).queue()
         }
