@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "nl.nickkoepr.tictactoe"
-version = "1.0.0"
+version = "1.0.1"
 val jdaVersion = "5.0.0-alpha.9"
 
 repositories {
@@ -21,7 +21,6 @@ dependencies {
     implementation("net.dv8tion:JDA:$jdaVersion")
     implementation("mysql:mysql-connector-java:8.0.28")
     implementation("org.xerial:sqlite-jdbc:3.36.0.3")
-    implementation("org.discordbots:DBL-Java-Library:2.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 }
 
